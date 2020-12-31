@@ -11,7 +11,8 @@ class Directory extends Component {
           title: "hats",
           imageUrl: "https://i.ibb.co/cvpntL1/hats.png",
           id: 1,
-          linkUrl: "shop/hats",
+          // linkUrl: "shop/hats",
+          linkUrl: "hats",
         },
         {
           title: "jackets",
@@ -28,6 +29,8 @@ class Directory extends Component {
         {
           title: "womens",
           imageUrl: "https://i.ibb.co/GCCdy8t/womens.png",
+          // imageUrl: "https://i.ibb.co/5Yzhrqy/womenclothing.jpg",
+          // imageUrl: "https://i.ibb.co/92sgFg4/woclothing.jpg",
           size: "large",
           id: 4,
           linkUrl: "shop/womens",
@@ -35,6 +38,8 @@ class Directory extends Component {
         {
           title: "mens",
           imageUrl: "https://i.ibb.co/R70vBrQ/men.png",
+          // imageUrl: "https://i.ibb.co/chCMNBk/mensclothing.jpg",
+          // imageUrl: "https://i.ibb.co/n81hFTG/menwear.jpg",
           size: "large",
           id: 5,
           linkUrl: "shop/mens",
@@ -46,11 +51,27 @@ class Directory extends Component {
   render() {
     return (
       <div className="directory-menu">
-        {this.state.sections.map(({ id, title, imageUrl, size }) => {
+        {
+          /* {this.state.sections.map(({ id, title, imageUrl, size, linkUrl }) => {
           return (
-            <MenuItem key={id} title={title} imageUrl={imageUrl} size={size} />
+            <MenuItem
+              key={id}
+              title={title}
+              imageUrl={imageUrl}
+              size={size}
+              linkUrl={linkUrl}
+            />
           );
-        })}
+        })} */
+          // Other way of doing this using 2 levels of destructuring
+          // this is done when the values u desctructure and the keys that you pass
+          // have the same name, as u can c in the eg above line 59, 60, 61, 62
+          // this way the same key names will be available
+          // as props in the component passed - MenuItem in this case
+          this.state.sections.map(({ id, ...otherSectionsProps }) => (
+            <MenuItem key={id} {...otherSectionsProps} />
+          ))
+        }
       </div>
     );
   }
