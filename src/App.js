@@ -6,32 +6,27 @@ import SignInAndSignUpPage from "./pages/sign-in-and-sign-up/sign-in-and-sign-up
 import Header from "./components/header/header.component";
 import { Switch, Route } from "react-router-dom";
 import { auth, createUserProfileDocument } from "./firebase/firebase.utils";
-
+// Appjs is the one which will generate the SET_CURRENT_USER action and fill
+// the payload of the user, hence it will use the mapDispathToProps to do that
+import { connect } from "react-redux";
+import { setCurrentUser } from "./redux/user/user.actions";
 class App extends Component {
-  constructor() {
-    super();
-    this.state = {
-      currentUser: null,
-    };
-  }
   unsubscribeFromAuth = null;
 
   componentDidMount() {
+    const { setCurrentUser } = this.props;
     this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
       if (userAuth) {
         const userRef = await createUserProfileDocument(userAuth);
         userRef.onSnapshot((snapShot) => {
-          this.setState({
-            currentUser: {
-              id: snapShot.id,
-              ...snapShot.data(),
-            },
+          setCurrentUser({
+            id: snapShot.id,
+            ...snapShot.data(),
           });
           console.log(this.state);
         });
-      } else {
-        this.setState({ currentUser: userAuth });
       }
+      setCurrentUser(userAuth);
     });
   }
 
@@ -41,7 +36,7 @@ class App extends Component {
   render() {
     return (
       <div>
-        <Header currentUser={this.state.currentUser} />
+        <Header />
         <Switch>
           <Route exact path="/" component={HomePage} />
           <Route path="/shop" component={ShopPage} />
@@ -51,5 +46,11 @@ class App extends Component {
     );
   }
 }
-
-export default App;
+// What this means is setCurrentUser: , this function name is available locally as
+// props, and that will in turn call dispact(setCurrentUser(user)), which is the
+// funtion imported from user.action.js , which will basically return an action object
+// with the type and the payload
+const mapDispatchToProps = (dispatch) => ({
+  setCurrentUser: (user) => dispatch(setCurrentUser(user)),
+});
+export default connect(null, mapDispatchToProps)(App);
