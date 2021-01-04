@@ -40,6 +40,7 @@ const Header = ({ currentUser, hidden }) => (
 // state in the below argument is the root store/state
 // that is mapped to the local prop user
 const mapStateToProps = ({ cart: { hidden }, user: { currentUser } }) => {
+  console.log("map state to props of header");
   return {
     currentUser,
     hidden,
