@@ -5,6 +5,9 @@ import { auth } from "../../firebase/firebase.utils";
 import CartIcon from "../cart-icon/cart-icon.components";
 import CartDropdown from "../cart-dropdown/cart-dropdown.components";
 import { ReactComponent as Logo } from "../../assets/crown.svg";
+import { createStructuredSelector } from "reselect";
+import { selectCartHidden } from "../../redux/cart/cart.selectors";
+import { selectCurrentUser } from "../../redux/user/user.selectors";
 import "./header.styles.scss";
 
 //The header component wants to listen in on the currentUser and hence it connects
@@ -39,11 +42,9 @@ const Header = ({ currentUser, hidden }) => (
 
 // state in the below argument is the root store/state
 // that is mapped to the local prop user
-const mapStateToProps = ({ cart: { hidden }, user: { currentUser } }) => {
-  console.log("map state to props of header");
-  return {
-    currentUser,
-    hidden,
-  };
-};
+const mapStateToProps = createStructuredSelector({
+  currentUser: selectCurrentUser,
+  hidden: selectCartHidden,
+});
+
 export default connect(mapStateToProps)(Header);

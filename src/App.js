@@ -10,6 +10,8 @@ import { auth, createUserProfileDocument } from "./firebase/firebase.utils";
 // the payload of the user, hence it will use the mapDispathToProps to do that
 import { connect } from "react-redux";
 import { setCurrentUser } from "./redux/user/user.actions";
+import { createStructuredSelector } from "reselect";
+import { selectCurrentUser } from "./redux/user/user.selectors";
 class App extends Component {
   unsubscribeFromAuth = null;
 
@@ -59,12 +61,9 @@ class App extends Component {
 
 //You want to use the CurrentUser properties and determine whether he should be on
 // the signin page or the home page after he is logged in or logged out
-const mapStateToProps = (state) => {
-  console.log("map state to props of appjs");
-  return {
-    currentUser: state.user.currentUser,
-  };
-};
+const mapStateToProps = createStructuredSelector({
+  currentUser: selectCurrentUser,
+});
 // What this means is setCurrentUser: , this function name is available locally as
 // props, and that will in turn call dispact(setCurrentUser(user)), which is the
 // funtion imported from user.action.js , which will basically return an action object

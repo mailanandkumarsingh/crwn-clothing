@@ -5,6 +5,7 @@ import "./cart-icon.styles.scss";
 import { toggleCartHidden } from "../../redux/cart/cart.actions";
 import { connect } from "react-redux";
 import { selectCartItemsCount } from "../../redux/cart/cart.selectors";
+import { createStructuredSelector } from "reselect";
 
 const CartIcon = ({ toggleCartHidden, itemCount }) => (
   <div className="cart-icon" onClick={toggleCartHidden}>
@@ -21,10 +22,7 @@ const mapDispatchToProps = (dispatch) => ({
 // value locally(itemcount using redue), unlike other(mapStateToProps) examples
 // where a particular value maybe user or items is pulled off
 // from the global state and is made available as props locally
-const mapStateToProps = (state) => {
-  console.log("mapStatetoProps of carticon");
-  return {
-    itemCount: selectCartItemsCount(state),
-  };
-};
+const mapStateToProps = createStructuredSelector({
+  itemCount: selectCartItemsCount,
+});
 export default connect(mapStateToProps, mapDispatchToProps)(CartIcon);
