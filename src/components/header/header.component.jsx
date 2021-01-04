@@ -2,15 +2,17 @@ import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { auth } from "../../firebase/firebase.utils";
+import CartIcon from "../cart-icon/cart-icon.components";
+import CartDropdown from "../cart-dropdown/cart-dropdown.components";
 import { ReactComponent as Logo } from "../../assets/crown.svg";
 import "./header.styles.scss";
 
 //The header component wants to listen in on the currentUser and hence it connects
 // to the global store/state and pulls in the Global state value of current user
 // to be accessible as props. Which is then destructured to get the current user
-const Header = ({ currentUser }) => (
+const Header = ({ currentUser, hidden }) => (
   <div className="header">
-    <Link to="/">
+    <Link to="/" className="pad">
       <Logo className="logo" />
     </Link>
     <div className="options">
@@ -29,15 +31,18 @@ const Header = ({ currentUser }) => (
           SIGN IN
         </Link>
       )}
+      <CartIcon />
     </div>
+    {hidden ? null : <CartDropdown />}
   </div>
 );
 
 // state in the below argument is the root store/state
 // that is mapped to the local prop user
-const mapStateToProps = (state) => {
+const mapStateToProps = ({ cart: { hidden }, user: { currentUser } }) => {
   return {
-    currentUser: state.user.currentUser,
+    currentUser,
+    hidden,
   };
 };
 export default connect(mapStateToProps)(Header);
