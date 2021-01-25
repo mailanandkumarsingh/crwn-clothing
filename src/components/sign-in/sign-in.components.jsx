@@ -13,6 +13,13 @@ class SignIn extends Component {
       password: "",
     };
   }
+  /*
+  shortcut way of avoiding constructor is
+  state = {
+    email: "",
+    password: ""
+  }
+  */
 
   handleSubmit = async (event) => {
     event.preventDefault();
